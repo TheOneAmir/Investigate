@@ -147,7 +147,6 @@ export class AppComponent implements OnInit {
 
       // Set the innerHTML of the script tag to the JSON configuration
       script.innerHTML = JSON.stringify(widgetConfig);
-      console.log('TradingView widget script created with config:', widgetConfig);
       // Append the TradingView widget script
       chartContainer.appendChild(script);
   }
@@ -167,10 +166,6 @@ export class AppComponent implements OnInit {
       script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-symbol-profile.js';
       script.async = true;
 
-      // Define the widget configuration as a global variable
-      // Note: The container_id must match the ID of the div where the widget will be rendered.
-      // For simplicity, we're assuming common exchanges like NASDAQ or NYSE.
-      // You might need more sophisticated logic for other exchanges or international symbols.
       const widgetConfig = {
           "symbol": `${ticker.toUpperCase()}`, // Dynamically set the symbol
           "colorTheme": "dark",
@@ -180,10 +175,7 @@ export class AppComponent implements OnInit {
           "height": 526
       };
 
-      // Set the innerHTML of the script tag to the JSON configuration
       script.innerHTML = JSON.stringify(widgetConfig);
-      console.log('TradingView widget script created with config:', widgetConfig);
-      // Append the TradingView widget script
       chartContainer.appendChild(script);
   }
 
@@ -217,21 +209,14 @@ export class AppComponent implements OnInit {
           "width": 350,
           "height": 526
       };
-
-      // Set the innerHTML of the script tag to the JSON configuration
       script.innerHTML = JSON.stringify(widgetConfig);
-      console.log('TradingView widget script created with config:', widgetConfig);
-      // Append the TradingView widget script
       chartContainer.appendChild(script);
   }
 
   // Function to load/update the TradingView widget
   updateChart(ticker: string) {
-      // Clear any existing widget content
-
       const chartContainer = document.getElementById('tradingview_chart_container');
       
-      console.log('Updating chart for ticker:', chartContainer);
       if (!chartContainer) {
         return;
       }
@@ -243,10 +228,6 @@ export class AppComponent implements OnInit {
       script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js';
       script.async = true;
 
-      // Define the widget configuration as a global variable
-      // Note: The container_id must match the ID of the div where the widget will be rendered.
-      // For simplicity, we're assuming common exchanges like NASDAQ or NYSE.
-      // You might need more sophisticated logic for other exchanges or international symbols.
       const widgetConfig = {
           "symbol": `${ticker.toUpperCase()}`, // Dynamically set the symbol
           "interval": "D",
@@ -259,10 +240,7 @@ export class AppComponent implements OnInit {
           "container_id": "tradingview_chart_container" // Must match the div ID
       };
 
-      // Set the innerHTML of the script tag to the JSON configuration
       script.innerHTML = JSON.stringify(widgetConfig);
-      console.log('TradingView widget script created with config:', widgetConfig);
-      // Append the TradingView widget script
       chartContainer.appendChild(script);
   }
 
@@ -279,12 +257,10 @@ export class AppComponent implements OnInit {
         next: (data) => {
           this.stockOverview = data;
           this.loading = false;
-          console.log('Fetched stock overview:', data);
         },
         error: (err) => {
           this.error = `Failed to fetch stock overview: ${err.message || 'An unknown error occurred'}. Please check your symbol and API key.`;
           this.loading = false;
-          console.error('API Error:', err);
         }
       });
   }
@@ -298,15 +274,6 @@ export class AppComponent implements OnInit {
     this.loading = true;
     this.error = null;
     this.fetchedSymbol = this.symbol.toUpperCase();
-    // if (this.cachedData[this.fetchedSymbol]) {
-    //   // Use cached data if available
-    //   this.stockData = this.cachedData[this.fetchedSymbol];
-    //   this.parsedData = this.parseData(this.stockData);
-    //   this.displayData = this.getLimitedData(this.parsedData);
-    //   this.loading = false;
-    //   console.log('Using cached data:', this.stockData);
-    //   return;
-    // }
 
     this.stockDataService.getDailyStockData(this.fetchedSymbol)
       .subscribe({
@@ -316,7 +283,6 @@ export class AppComponent implements OnInit {
           this.parsedData = this.parseData(data);
           this.displayData = this.getLimitedData(this.parsedData);
           this.cachedData[this.fetchedSymbol] = data; // Cache the fetched data
-          console.log('Fetched data:', data);
         },
         error: (err) => {
           this.error = `Failed to fetch data: ${err.message || 'An unknown error occurred'}. Please check your symbol and API key.`;
@@ -360,7 +326,6 @@ export class AppComponent implements OnInit {
       this.daysTraded = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)) + 1;
     }
 
-    console.log('Date Range:', startDate, endDate);
     // Filter dates within the selected range
     const filteredData = data.filter((d: any) => {
       const date = new Date(d.date);
@@ -369,13 +334,11 @@ export class AppComponent implements OnInit {
     
 
     data = filteredData;
-    console.log('Filtered data for date range:', data);
 
     if (!data) return {};
     // Sort data by date descending for display
     data = data.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
     this.displayData = data;
-    console.log('Sorted data:', this.displayData);
 
     this.chartData = []; // Reset chart data
     this.openChartData = []; // Reset open chart data

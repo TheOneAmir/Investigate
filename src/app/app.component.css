@@ -93,54 +93,9 @@ mat-form-field {
   height: 75px;
   font-size:12px;
 }
-  body {
-    font-family: 'Inter', sans-serif;
-  }
-  .container {
-    max-width: 900px;
-  }
-  input, button {
-    border-radius: 0.5rem; /* rounded-lg */
-  }
-
-  .example-label {
-    display: table-cell;
-    font-size: 14px;
-    margin-left: 8px;
-    min-width: 120px;
-  }
-  
-  .example-button-row {
-    display: table-cell;
-    max-width: 600px;
-  }
-  
-  .example-button-row .mat-mdc-button-base {
-    margin: 8px 8px 8px 0;
-  }
-  
-  .example-flex-container {
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-  }
-  
-  .example-button-container {
-    display: flex;
-    justify-content: center;
-    width: 120px;
-  }
-
-  .tradingview-widget-container {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-  }
-  .tradingview-widget-container iframe {
-      width: 100%;
-      height: 100%;
-      border: none; /* Remove default iframe border */
-      border-radius: 8px; /* Slightly rounded corners for the iframe itself */
-  }
+.container {
+  max-width: 900px;
+}
+input, button {
+  border-radius: 0.5rem; /* rounded-lg */
+}

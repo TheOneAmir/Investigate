@@ -67,7 +67,6 @@ export class StockDataService {
       map((response: any) => {
         // Basic parsing: extracting the relevant fields from the response
         if (response) {
-          console.log('API Response:', response);
           return {
             Symbol: response['Symbol'],
             Name: response['Name'],
