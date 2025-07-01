@@ -2,6 +2,24 @@ import { Component, OnInit } from '@angular/core';
 import { StockDataService } from '../service/stock-data.service';
 import { ChartType } from 'angular-google-charts';
 import { FormGroup, FormControl } from '@angular/forms'; // Import for reactive forms
+import { HttpClient } from '@angular/common/http';
+
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
+
+interface StockInsightRequest {
+  ticker: string;
+  news: string;
+  ratios: string;
+  riskMetrics: string;
+  conversationHistory?: ChatMessage[];
+}
+
+interface StockInsightResponse {
+  insight: string;
+}
 
 @Component({
   selector: 'app-root',
@@ -9,9 +27,11 @@ import { FormGroup, FormControl } from '@angular/forms'; // Import for reactive 
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
+  
   symbol: string = 'MSFT';fetchedSymbol: string = '';
   stockData: any;
   stockOverview: { [key: string]: any } | null = null; // Stock overview data
+  
   parsedData: { date: string, open: number, high: number, low: number, close: number, volume: number, change: number, openchange: number }[] = [];
   cachedData: any = {};
   displayData: { [key: string]: any } = {}; // Data to display in the list
@@ -23,6 +43,7 @@ export class AppComponent implements OnInit {
   daysTraded: number = 0; // Number of days traded
   isFixed = false; // Flag to toggle fixed header
 
+  aiQuestion: string = ''; // AI question input
   displayDataOrder: any;
 
     // Google Charts properties
@@ -86,7 +107,10 @@ export class AppComponent implements OnInit {
     end: new FormControl<Date | null>(null),
   });
 
-  constructor(private stockDataService: StockDataService) { }
+  constructor(
+    private stockDataService: StockDataService,
+    private http: HttpClient
+  ) { }
 
   ngOnInit(): void {
     // Optionally fetch initial data on component load
@@ -100,7 +124,6 @@ export class AppComponent implements OnInit {
  
     this.updateGainers();
     this.updateAllData(); // Update all data for the new symbol
-    // Do not call updateChart here; call it in ngAfterViewInit
     this.displayDataOrder = (a: any, b: any) => {
       return new Date(a.date).getTime() - new Date(b.date).getTime();
     };
@@ -181,8 +204,6 @@ export class AppComponent implements OnInit {
 
   // Function to load/update the TradingView widget
   updateFundamentals(ticker: string) {
-      // Clear any existing widget content
-
       const chartContainer = document.getElementById('tradingview_fundamentals_container');
 
       if (!chartContainer) {
@@ -196,18 +217,14 @@ export class AppComponent implements OnInit {
       script.src = 'https://s3.tradingview.com/external-embedding/embed-widget-financials.js';
       script.async = true;
 
-      // Define the widget configuration as a global variable
-      // Note: The container_id must match the ID of the div where the widget will be rendered.
-      // For simplicity, we're assuming common exchanges like NASDAQ or NYSE.
-      // You might need more sophisticated logic for other exchanges or international symbols.
       const widgetConfig = {
-          "symbol": `${ticker.toUpperCase()}`, // Dynamically set the symbol
-          "colorTheme": "dark",
-          "displayMode": "regular",
-          "isTransparent": false,
-          "locale": "en",
-          "width": 350,
-          "height": 526
+        "symbol": `${ticker.toUpperCase()}`, // Dynamically set the symbol
+        "colorTheme": "dark",
+        "displayMode": "regular",
+        "isTransparent": false,
+        "locale": "en",
+        "width": 350,
+        "height": 526
       };
       script.innerHTML = JSON.stringify(widgetConfig);
       chartContainer.appendChild(script);
@@ -229,15 +246,15 @@ export class AppComponent implements OnInit {
       script.async = true;
 
       const widgetConfig = {
-          "symbol": `${ticker.toUpperCase()}`, // Dynamically set the symbol
-          "interval": "D",
-          "timezone": "Etc/UTC",
-          "theme": "dark",
-          "style": "1",
-          "locale": "en",
-          "enable_publishing": false,
-          "allow_symbol_change": false,
-          "container_id": "tradingview_chart_container" // Must match the div ID
+        "symbol": `${ticker.toUpperCase()}`, 
+        "interval": "D",
+        "timezone": "Etc/UTC",
+        "theme": "dark",
+        "style": "1",
+        "locale": "en",
+        "enable_publishing": false,
+        "allow_symbol_change": false,
+        "container_id": "tradingview_chart_container" 
       };
 
       script.innerHTML = JSON.stringify(widgetConfig);
@@ -309,7 +326,7 @@ export class AppComponent implements OnInit {
     this.updateChart(this.symbol); // Update the chart with the current symbol
     this.updateFundamentals(this.symbol); // Update the fundamentals with the current symbol
     this.updateOverview(this.symbol); // Update the overview with the current symbol
-    this.isFixed = false; // Reset fixed header state when updating data
+    this.isFixed = false; 
   }
 
   // Helper to limit the number of displayed entries for brevity
@@ -331,12 +348,10 @@ export class AppComponent implements OnInit {
       const date = new Date(d.date);
       return (!startDate || date >= startDate) && (!endDate || date <= endDate);
     })
-    
 
     data = filteredData;
-
     if (!data) return {};
-    // Sort data by date descending for display
+
     data = data.sort((a: any, b: any) => new Date(b.date).getTime() - new Date(a.date).getTime());
     this.displayData = data;
 
@@ -374,12 +389,37 @@ export class AppComponent implements OnInit {
     }));
 
     for (let i = 1; i < mappedKeys.length; i++) {
-      // Calculate change in opening price for consecutive days
       if (i > 0) {
         mappedKeys[i].openchange = Number(((mappedKeys[i].open - mappedKeys[i - 1].open) / mappedKeys[i - 1].open * 100).toFixed(2));
         this.overallOpenGain += Number(mappedKeys[i].open - mappedKeys[i - 1].open);
       }
     }
     return mappedKeys;
+  }
+
+  askAI(): void {
+    if (!this.aiQuestion.trim()) {
+      this.error = 'Please enter a question.';
+      return;
+    }
+
+    const request: StockInsightRequest = {
+      ticker: this.symbol.toUpperCase(),
+      news: JSON.stringify(this.stockOverview?.['news'] || []),
+      ratios: JSON.stringify(this.stockOverview?.['ratios'] || {}),
+      riskMetrics: JSON.stringify(this.stockOverview?.['riskMetrics'] || {}),
+      conversationHistory: [{ role: 'user', content: this.aiQuestion }]
+    };
+
+    this.http.post<StockInsightResponse>('http://localhost:3000/ask-ai', request)
+      .subscribe({
+        next: (response) => {
+          alert(`AI Insight: ${response.insight}`);
+          this.aiQuestion = ''; // Clear the input after asking
+        },
+        error: (err) => {
+          this.error = `Failed to get AI insight: ${err.message || 'An unknown error occurred'}.`;
+        }
+      });
   }
 }

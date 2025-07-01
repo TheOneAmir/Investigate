@@ -3,12 +3,12 @@
   <mat-toolbar class="example-header">
     <span class="mat-toolbar-content" style="background: rgba(0,0,0,0.7); padding: 0 16px; border-radius: 4px;">Investigate</span>
   </mat-toolbar>
-  <mat-sidenav-container style=" overflow-y:hidden">
+  <mat-sidenav-container style="overflow-y:hidden">
     <mat-sidenav opened mode="side" fixedInViewport="false" style="overflow:hidden;">
     </mat-sidenav>
     <mat-sidenav-content class="text-gray-200 h-full full-background" style="width:100vw; height:calc(100vh - 64px); overflow-y: hidden; display: flex;">
       <div class="h-full max-h-screen mt-2 flex flex-col">
-        <div class="flex w-full overflow-x-auto mb-4">
+        <div class="flex w-full overflow-x-auto mb-2">
         <div class="container-sidenav flex flex-col">
         <div class="container ml-1 mx-auto mt-2">
           <div class="flex container mx-auto">
@@ -36,7 +36,7 @@
             </div>
           </div>
         </div>
-        <div class="container">
+        <!--<div class="container">
             <form [formGroup]="dateRangeForm" class="md:space-y-0">
               <mat-form-field class="text-sm mt-2">
                 <mat-label>Enter a date range</mat-label>
@@ -55,7 +55,7 @@
                 <mat-date-range-picker #picker></mat-date-range-picker>
               </mat-form-field>
             </form>
-          </div>
+          </div>-->
           
         
           <div class="container-gainers">
@@ -126,8 +126,8 @@
           </div>
         </div>
         -->
-        <div *ngIf="chartData.length > 1 && !loading && !error" class="container ml-2 p-6 h-full container-bg">
-          <h3 class="text-2xl mb-4 text-gray-200">Daily Change Histogram</h3>
+        <div *ngIf="chartData.length > 1 && !loading && !error" class="container ml-2 p-4 h-full container-bg">
+          <h3 class="text-2xl mb-2 text-gray-200">Daily Change Histogram</h3>
           <google-chart
             #chart
             [title]="chartOptions.title"
@@ -135,7 +135,7 @@
             [data]="chartData"
             [options]="chartOptions"
           ></google-chart>
-          <p class="text-sm text-gray-500 mt-4 text-center">Distribution of daily percentage changes.</p>
+          <p class="text-sm text-gray-500 mt-4 text-center">Number of Days vs Percentage Gain</p>
         </div>
 <!--
         <div *ngIf="chartData.length > 1 && !loading && !error" class="container border border-gray-200 container-bg ml-2 shadow-lg rounded-lg p-6 h-full">
@@ -162,7 +162,15 @@
           </label>
         </div>
       </div>
-      <div class="road mt-2">
+      <div class="road">
+        <div class="aiquestions">
+          <textarea
+            class="w-full h-full p-2 bg-gray-300 rounded-lg shadow-md"
+            placeholder="Ask AI..."
+            [(ngModel)]="aiQuestion"
+            (keyup.enter)="askAI()"
+          ></textarea>
+        </div>
         <div class="dotted-line"></div>
         <div class="dotted-line-bottom mt-2"></div>
       </div>

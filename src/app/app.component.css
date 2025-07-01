@@ -1,6 +1,16 @@
 ::ng-deep .mat-drawer-inner-container {
   overflow: hidden !important;
 }
+.aiquestions {
+  position: relative;
+  margin: 0 auto;
+  display: block;
+  width: 50%;
+  height: calc(50% - 22px);
+  padding-top: 5px;
+  max-width: 700px;
+  box-sizing: border-box;
+}
 .body {
   font-family: '-apple-system,BlinkMacSystemFont,Trebuchet MS,Roboto,Ubuntu,sans-serif';
 }
