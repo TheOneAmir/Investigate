@@ -6,9 +6,11 @@
   margin: 0 auto;
   display: block;
   width: 50%;
-  height: calc(50% - 22px);
+  height: calc(50% - 26px);
   padding-top: 5px;
   max-width: 700px;
+  max-height: 130px;
+  min-height:90px;
   box-sizing: border-box;
 }
 .body {
