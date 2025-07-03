@@ -1,17 +1,49 @@
 ::ng-deep .mat-drawer-inner-container {
   overflow: hidden !important;
 }
-.aiquestions {
-  position: relative;
+.convo-container {
   margin: 0 auto;
-  display: block;
-  width: 50%;
+  display: flex;
+  width: 66%;
   height: calc(50% - 26px);
   padding-top: 5px;
+  max-width: 900px;
+  max-height: 130px;
+  min-height:90px;
+  box-sizing: border-box;
+}
+.aiquestions {
+  width: 100%;
+  height: 100%;
+  min-width: 200px;
   max-width: 700px;
   max-height: 130px;
   min-height:90px;
   box-sizing: border-box;
+}
+.aianswers {
+  width: 100%;
+  min-width: 200px;
+  height: 100%;
+  max-width: 700px;
+  max-height: 130px;
+  min-height:90px;
+  box-sizing: border-box;
+}
+.ask-button {
+  position: relative;
+  height: 100%;
+  max-height: 130px;
+  min-height:90px;
+  background-color: #2b4863;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.bot-avatar {
+  background-image: url('../assets/dalle-bot2.png');
+  background-size: cover;
+  height: 100%;
 }
 .body {
   font-family: '-apple-system,BlinkMacSystemFont,Trebuchet MS,Roboto,Ubuntu,sans-serif';
@@ -81,6 +113,7 @@ div.mat-drawer-inner-container {
   background-image: url('../assets/openart-road.png');
   background-color: #0d0d0d;
   color: #2b4863;
+  width: 100vw;
   position: relative; /* Needed for positioning the line */
   flex: 1 1 auto; /* Allow the road to grow and shrink */
   flex-grow: 1;

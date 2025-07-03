@@ -163,13 +163,37 @@
         </div>
       </div>
       <div class="road">
-        <div class="aiquestions">
-          <textarea
-            class="w-full h-full p-2 bg-gray-300 rounded-lg shadow-md"
-            placeholder="Ask AI..."
-            [(ngModel)]="aiQuestion"
-            (keyup.enter)="askAI()"
-          ></textarea>
+        <div class="flex pt-2 convo-container">
+          <div class="flex items-center justify-center mr-2">
+            <!-- To match width to height, use a container with a square aspect ratio -->
+            <div style="aspect-ratio: 1 / 1; height: 100%; overflow: hidden; display: flex; align-items: center; justify-content: center;" 
+              class="rounded-lg bot-avatar">
+            </div>
+          </div>
+          <div class="aiquestions">
+            <textarea
+              class="w-full h-full bg-gray-300 rounded-lg shadow-md"
+              placeholder="Welcome to Investigate! Ask me anything about stocks, trading, or market trends."
+              [(ngModel)]="aiAnswer"
+              (keyup.enter)="askAI()"
+              readonly
+            ></textarea>
+          </div>
+          <div class="ml-2 mr-2">
+            <button
+              (click)="askAI()"
+              class="ask-button hover:bg-blue-700 text-white font-bold py-2 px-3 rounded-md focus:outline-none focus:shadow-outline transition duration-300 ease-in-out"
+            >
+              Ask AI
+            </button>
+          </div>
+          <div class="aianswers">
+            <textarea
+              class="w-full h-full bg-gray-300 rounded-lg shadow-md"
+              placeholder="AI Answer..."
+              [value]="aiQuestion"
+            ></textarea>
+          </div>
         </div>
         <div class="dotted-line"></div>
         <div class="dotted-line-bottom mt-2"></div>
