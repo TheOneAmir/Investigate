@@ -7,8 +7,8 @@
   width: 66%;
   height: calc(50% - 26px);
   padding-top: 5px;
-  max-width: 900px;
-  max-height: 130px;
+  max-width: 1000px;
+  max-height: 125px;
   min-height:90px;
   box-sizing: border-box;
 }
@@ -17,7 +17,7 @@
   height: 100%;
   min-width: 200px;
   max-width: 700px;
-  max-height: 130px;
+  max-height: 125px;
   min-height:90px;
   box-sizing: border-box;
 }
@@ -26,14 +26,14 @@
   min-width: 200px;
   height: 100%;
   max-width: 700px;
-  max-height: 130px;
+  max-height: 125px;
   min-height:90px;
   box-sizing: border-box;
 }
 .ask-button {
   position: relative;
   height: 100%;
-  max-height: 130px;
+  max-height: 125px;
   min-height:90px;
   background-color: #2b4863;
   color: white;
@@ -80,7 +80,6 @@ div.mat-drawer-inner-container {
   color: #2b4863;
   height:526px !important;
   max-width:700px !important;
-  min-width:300px !important;
   font-family: '-apple-system,BlinkMacSystemFont,Trebuchet MS,Roboto,Ubuntu,sans-serif';
   -webkit-font-smoothing: antialiased;
   font-feature-settings: "tnum" on, "lnum" on;

@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
   isFixed = false; // Flag to toggle fixed header
 
   aiQuestion: string = ''; // AI question input
-  aiAnswer: string = 'Welcome to Investigate! Ask me anything about stocks, trading, or market trends.'; // AI answer output
+  aiAnswer: string = 'Welcome to Investigate! Ask me about stocks, trading, or market trends.'; // AI answer output
   displayDataOrder: any;
 
     // Google Charts properties
